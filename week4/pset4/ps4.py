@@ -130,8 +130,10 @@ def generate_models(x, y, degs):
         a list of numpy arrays, where each array is a 1-d array of coefficients
         that minimizes the squared error of the fitting polynomial
     """
-    # TODO
-    pass
+    models = []
+    for deg in degs:
+        models.append(np.polyfit(x, y, deg))
+    return models
 
 # Problem 2
 def r_squared(y, estimated):
@@ -143,8 +145,16 @@ def r_squared(y, estimated):
     Returns:
         a float for the R-squared error term
     """
-    # TODO
-    pass
+    mean = 0
+    yMinusE = 0
+    yMinusMean = 0
+    for index, val in enumerate(y):
+        mean += val
+        yMinusE += (val - estimated[index])**2
+    mean = mean / len(y)
+    for val in y:
+        yMinusMean += (val - mean)**2
+    return 1 - yMinusE/yMinusMean
 
 # Problem 3
 def evaluate_models_on_training(x, y, models):
@@ -168,26 +178,37 @@ def evaluate_models_on_training(x, y, models):
     Returns:
         None
     """
-    # TODO
-    pass
+    x = pylab.array(x)
+    y = pylab.array(y)
+    for model in models:
+        a,b = model
+        pylab.plot(x, y, 'bo')
+        estYVals = a * x + b
+        pylab.plot(x, estYVals)
+        rSq = r_squared(y, estYVals)
+        print(rSq)
 
 
 ### Begining of program
-raw_data = Climate('data.csv')
-
-# Problem 3
-y = []
-x = INTERVAL_1
-for year in INTERVAL_1:
-    y.append(raw_data.get_daily_temp('BOSTON', 1, 10, year))
-models = generate_models(x, y, [1])
-evaluate_models_on_training(x, y, models)
-
-
-# Problem 4: FILL IN MISSING CODE TO GENERATE y VALUES
-x1 = INTERVAL_1
-x2 = INTERVAL_2
-y = []
-# MISSING LINES
-models = generate_models(x, y, [1])    
-evaluate_models_on_training(x, y, models)
+#raw_data = Climate('data.csv')
+#
+## Problem 3
+#y = []
+#x = INTERVAL_1
+#for year in INTERVAL_1:
+#    y.append(raw_data.get_daily_temp('BOSTON', 1, 10, year))
+#models = generate_models(x, y, [1])
+#evaluate_models_on_training(x, y, models)
+#pylab.show()
+#
+## Problem 4: FILL IN MISSING CODE TO GENERATE y VALUES
+#x1 = INTERVAL_1
+#x2 = INTERVAL_2
+#y = []
+#for year in INTERVAL_1:
+#    y.append(np.mean(raw_data.get_yearly_temp('BOSTON', year)))
+#models = generate_models(x, y, [1])    
+#evaluate_models_on_training(x, y, models)
+#pylab.show()
+        
+pylab.plot(pylab.array([1,2,3]), pylab.array([10,11,12]))
